@@ -1,0 +1,161 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ace5ee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+/* İlk div olan boxContainer için stiller */
+.boxContainer {
+    position: absolute;
+    top: 20px;
+    text-align: center;
+    z-index: 100;
+}
+
+.boxContainer h2 {
+    color: #333;
+}
+
+.boxContainer select {
+    padding: 10px;
+    width: 200px;
+    border: 1px solid #888;
+    border-radius: 5px;
+    background-color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.boxContainer select:hover {
+    border-color: #4a90e2;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.boxContainer p {
+    margin-top: 20px;
+    color: #4a90e2;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* İkinci div olan animation-wrapper için stiller */
+.animation-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.water {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.water ul.waves {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.water ul.waves li {
+    background-repeat: repeat-x;
+}
+
+.water ul.waves li.wave-one {
+    animation: wave 8.7s linear infinite;
+    background-position: 0 0;
+    bottom: 0;
+    height: 50px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    z-index: 10;
+}
+
+.water ul.waves li.wave-two {
+    animation: wave 10s linear infinite;
+    background-position: 0 0;
+    bottom: 0;
+    height: 84px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    z-index: 9;
+}
+
+.water ul.waves li.wave-three {
+    animation: wave 25s linear infinite;
+    background-position: 0 0;
+    bottom: 0;
+    height: 190px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    z-index: 8;
+}
+
+.water ul.waves li.wave-four {
+    animation: wave 25s linear infinite;
+    background-position: 0 0;
+    bottom: 0;
+    height: 205px;
+    left: 0;
+    position: absolute;
+    right: 0;
+}
+
+.boat {
+    animation: boat 3s linear infinite;
+    background-repeat: no-repeat;
+    bottom: 175px;
+    height: 145px;
+    left: 50%;
+    position: absolute;
+    width: 250px;
+    transform: translateX(-50%);
+}
+
+.cloud {
+    animation: cloud 30s linear infinite;
+    background-repeat: no-repeat;
+    top: 50px;
+    height: 165px;
+    left: 0;
+    position: absolute;
+    width: 297px;
+}
+
+.cloud2 {
+    animation: cloud 25s linear infinite;
+    background-repeat: no-repeat;
+    bottom: 320px;
+    height: 165px;
+    left: 140px;
+    position: absolute;
+    width: 297px;
+}
+
+/* Animasyonlar */
+@keyframes wave {
+    from { background-position: 0 0; }
+    to { background-position: 1920px 0; }
+}
+
+@keyframes boat {
+    0%, 100% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, -5px); }
+}
+
+@keyframes cloud {
+    0% { left: -30%; }
+    100% { left: 100%; }
+}

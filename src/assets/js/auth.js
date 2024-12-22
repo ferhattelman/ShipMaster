@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (username === correctUsername && password === correctPassword) {
                 alert("Giriş başarılı!");
+                // Username bilgisini localStorage'a kaydedin
+                localStorage.setItem("username", username);
                 window.location.href = "homePage.html";
             } else {
                 alert("Kullanıcı adı veya şifre yanlış.");

@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment Details</title>
+    <link rel="stylesheet" href="/assets/css/homeStyle.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+    <link rel="stylesheet" href="/assets/css/shipDetails.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .details-container {
+            width: 90%;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .details-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .details-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .details-section {
+            margin-top: 20px;
+        }
+
+        .details-section h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .details-section .field {
+            margin-bottom: 10px;
+        }
+
+        .field strong {
+            color: #555;
+        }
+
+        .status-active {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-inactive {
+            color: red;
+            font-weight: bold;
+        }
+
+        .maintenance-records {
+            margin-top: 40px;
+            border-top: 2px solid #f0f0f0;
+            padding-top: 20px;
+        }
+
+        .maintenance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .maintenance-table th,
+        .maintenance-table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .maintenance-table th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .status-planned {
+            color: orange;
+            font-weight: bold;
+        }
+
+        .status-completed {
+            color: green;
+            font-weight: bold;
+        }
+
+        .add-maintenance-btn {
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-maintenance-btn:hover {
+            background-color: #218838;
+        }
+
+        .details-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .details-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header style="display: flex; justify-content: center; align-items: center; width: 100%; height: 60px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;">
+        <div class="logosec" style="text-align: center;">
+            <div class="logo" style="font-size: 24px; font-weight: bold; color: #333;">ShipMaster</div>
+        </div>
+    </header>
+    
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="navcontainer">
+            <nav class="nav">
+                <div class="nav-upper-options">
+                    <div class="nav-option" onclick="location.href='/home'">
+                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
+                            class="nav-img" alt="dashboard">
+                        <h3>Ana Sayfa</h3>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="main content-section">
+            <div class="ship-details-container">
+                <div class="ship-header">
+                    <h1>Equipment Details</h1>
+                </div>
+
+
+                <main>
+                    <div class="details-container">
+                        <div class="details-header">
+                            <h2>Equipment Details</h2>
+                            <button class="details-btn" onclick="openEditEquipmentModal()">Edit Equipment</button>
+                        </div>
+                        <div class="details-section">
+                            <h3>Equipment Information</h3>
+                            <div class="field"><strong>Name:</strong>
+                                <%= equipment.EquipmentName %>
+                            </div>
+                            <div class="field"><strong>Category:</strong>
+                                <%= equipment.Category %>
+                            </div>
+                            <div class="field"><strong>Description:</strong>
+                                <%= equipment.Description %>
+                            </div>
+                            <div class="field"><strong>Addition Date:</strong>
+                                <%= new Date(equipment.AdditionDate).toLocaleDateString() %>
+                            </div>
+                            <div class="field"><strong>Status:</strong>
+                                <span class="<%= equipment.Status ? 'status-active' : 'status-inactive' %>">
+                                    <%= equipment.Status ? 'Active' : 'Inactive' %>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="maintenance-records">
+                            <h3>Maintenance Records</h3>
+                            <button class="btn btn-success add-maintenance-btn" onclick="openAddMaintenanceModal()">+
+                                Add Maintenance</button>
+                            <table class="maintenance-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Description</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% maintenanceRecords.forEach(record=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= new Date(record.Time).toLocaleDateString() %>
+                                            </td>
+                                            <td>
+                                                <%= new Date(record.Time).toLocaleTimeString([], { hour: '2-digit' ,
+                                                    minute: '2-digit' }) %>
+                                            </td>
+                                            <td>
+                                                <%= record.Description %>
+                                            </td>
+                                            <td
+                                                class="<%= record.Status === 'Completed' ? 'status-completed' : 'status-planned' %>">
+                                                <%= record.Status %>
+                                            </td>
+                                            <td>
+                                                <button
+                                                    onclick="editMaintenance('<%= record.MaintenanceRecordId %>')">Edit</button>
+                                                <button
+                                                    onclick="deleteMaintenance('<%= record.MaintenanceRecordId %>')">Delete</button>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </main>
+            </div>
+        </div>
+        <!-- Add Maintenance Modal -->
+        <div id="addMaintenanceModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeAddMaintenanceModal()">&times;</span>
+                <h2>Add New Maintenance</h2>
+                <form id="addMaintenanceForm">
+                    <input type="hidden" id="shipEquipmentId" name="shipEquipmentId"
+                        value="<%= equipment.ShipEquipmentId %>">
+                    <label for="maintenanceDate">Maintenance Date & Time:</label>
+                    <input type="datetime-local" id="maintenanceDate" name="time" required>
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" rows="4" required></textarea>
+                    <button type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+        <!-- Edit Equipment Modal -->
+        <div id="editEquipmentModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditEquipmentModal()">&times;</span>
+                <h2>Edit Equipment</h2>
+                <form id="editEquipmentForm">
+                    <!-- Hidden Input for Equipment ID -->
+                    <input type="hidden" id="editEquipmentId" name="equipmentId"
+                        value="<%= equipment.ShipEquipmentId %>">
+
+                    <!-- Equipment Name -->
+                    <div class="form-group">
+                        <label for="editEquipmentName">Equipment Name:</label>
+                        <input type="text" id="editEquipmentName" name="equipmentName"
+                            value="<%= equipment.EquipmentName %>" required>
+                    </div>
+
+                    <!-- Category -->
+                    <div class="form-group">
+                        <label for="editCategory">Category:</label>
+                        <select id="editCategory" name="category" required>
+                            <% categories.forEach(category=> { %>
+                                <option value="<%= category.ShipEquipmentCategoryId %>"
+                                    <%=category.ShipEquipmentCategoryId===equipment.CategoryId ? 'selected' : '' %>>
+                                    <%= category.CategoryName %>
+                                </option>
+                                <% }) %>
+                        </select>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group">
+                        <label for="editDescription">Description:</label>
+                        <textarea id="editDescription" name="description"
+                            required><%= equipment.Description %></textarea>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="form-group">
+                        <label for="editStatus">Status:</label>
+                        <select id="editStatus" name="status" required>
+                            <option value="1" <%=equipment.Status ? 'selected' : '' %>>Active</option>
+                            <option value="0" <%=!equipment.Status ? 'selected' : '' %>>Inactive</option>
+                        </select>
+                    </div>
+
+                    <!-- Save Changes Button -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Modal başlangıçta gizli olacak
+            document.getElementById('addMaintenanceModal').style.display = 'none';
+        });
+        // Modal açma
+        function openAddMaintenanceModal() {
+            document.getElementById('addMaintenanceModal').style.display = 'flex';
+        }
+
+        // Modal kapatma
+        function closeAddMaintenanceModal() {
+            document.getElementById('addMaintenanceModal').style.display = 'none';
+        }
+
+        function editMaintenance(id) {
+            // Bakım düzenleme işlemleri için modal açılır
+            console.log('Editing Maintenance:', id);
+        }
+        function openEditEquipmentModal() {
+            document.getElementById('editEquipmentId').value = '<%= equipment.ShipEquipmentId %>';
+            document.getElementById('editEquipmentName').value = '<%= equipment.EquipmentName %>';
+            document.getElementById('editCategory').value = '<%= equipment.CategoryId %>'; // Ensure `CategoryId` is passed
+            document.getElementById('editDescription').value = '<%= equipment.Description %>';
+            document.getElementById('editStatus').value = '<%= equipment.Status ? "1" : "0" %>';
+
+            document.getElementById('editEquipmentModal').style.display = 'flex';
+        }
+
+        function closeEditEquipmentModal() {
+            document.getElementById('editEquipmentModal').style.display = 'none';
+        }
+
+
+        function closeEditEquipmentModal() {
+            // Modalı kapat
+            document.getElementById('editEquipmentModal').style.display = 'none';
+        }
+
+
+        // Bakım silme
+        function deleteMaintenance(id) {
+            if (confirm('Are you sure you want to delete this maintenance record?')) {
+                fetch(`/delete-maintenance/${id}`, { method: 'DELETE' })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Maintenance record deleted successfully!');
+                            location.reload();
+                        } else {
+                            alert('Failed to delete maintenance record.');
+                        }
+                    })
+                    .catch(err => console.error('Error deleting maintenance:', err));
+            }
+        }
+
+
+        // Form gönderimi
+        document.getElementById('addMaintenanceForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Formun varsayılan gönderimini engelle
+
+            const maintenanceDateInput = document.getElementById('maintenanceDate');
+            const descriptionInput = document.getElementById('description');
+            const shipEquipmentId = document.getElementById('shipEquipmentId').value; // ShipEquipmentId alınmalı
+
+            const maintenanceDate = new Date(maintenanceDateInput.value);
+            const formattedDate = maintenanceDate.toISOString(); // ISO formatına çevir
+
+            // Form verilerini gönder
+            fetch('/add-maintenance', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    time: formattedDate,
+                    description: descriptionInput.value,
+                    shipEquipmentId: shipEquipmentId, // ShipEquipmentId gönderiliyor
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Maintenance added successfully!');
+                        window.location.reload(); // Sayfayı yenile
+                    } else {
+                        alert('Failed to add maintenance: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error adding maintenance:', error);
+                });
+        });
+
+        document.getElementById('editEquipmentForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const equipmentId = document.getElementById('editEquipmentId').value;
+            const equipmentName = document.getElementById('editEquipmentName').value;
+            const category = document.getElementById('editCategory').value;
+            const description = document.getElementById('editDescription').value;
+            const status = document.getElementById('editStatus').value === '1';
+
+            console.log('Form Data:', { equipmentId, equipmentName, category, description, status }); // Konsola yazdır
+
+            fetch('/update-equipment', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ equipmentId, equipmentName, category, description, status }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Equipment updated successfully!');
+                        location.reload();
+                    } else {
+                        alert('Update failed: ' + data.message);
+                    }
+                })
+                .catch(error => console.error('Error updating equipment:', error));
+        });
+
+
+
+        // Form gönderim işlevi
+        document.getElementById('editEquipmentForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const equipmentId = document.getElementById('editEquipmentId').value;
+            const equipmentName = document.getElementById('editEquipmentName').value;
+            const category = document.getElementById('editCategory').value;
+            const description = document.getElementById('editDescription').value;
+            const status = document.getElementById('editStatus').value === '1';
+
+            fetch('/update-equipment', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ equipmentId, equipmentName, category, description, status }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Equipment updated successfully!');
+                        location.reload();
+                    } else {
+                        alert('Update failed: ' + data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        function openEditEquipmentModal() {
+            document.getElementById('editEquipmentModal').style.display = 'flex';
+        }
+
+        function closeEditEquipmentModal() {
+            document.getElementById('editEquipmentModal').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tüm modalları gizli tut
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.style.display = 'none';
+            });
+        });
+
+
+
+
+
+    </script>
+
+    <style>
+        /* Modal arka plan */
+        .modal {
+            display: none;
+            /* Başlangıçta görünmez */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            /* Arkaplan karartması */
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            /* Yatayda ortalama */
+            align-items: center;
+            /* Dikeyde ortalama */
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            /* Ekran genişliğine göre ayarlanabilir */
+            max-width: 500px;
+            /* Maksimum genişlik */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: fadeIn 0.3s ease-in-out;
+            /* Giriş animasyonu */
+        }
+
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 20px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: red;
+        }
+
+        /* Giriş animasyonu */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+
+        /* Başlık */
+        .modal-content h2 {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Form elemanları */
+        .modal-content label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .modal-content input,
+        .modal-content textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .modal-content button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .modal-content button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Fade-in animasyonu */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .modal-content h2 {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: red;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .form-actions button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .form-actions button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+</body>
+
+</html>

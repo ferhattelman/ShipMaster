@@ -1,0 +1,123 @@
+/* Genel Ayarlar */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+h1, h2, h3 {
+    margin: 0 0 15px;
+}
+
+/* Main Container */
+.main-container {
+    display: flex;
+}
+
+.content-section {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Ship Details Header */
+.ship-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.ship-header h1 {
+    font-size: 28px;
+    color: #555;
+}
+
+/* Info Cards */
+.ship-info-cards {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.info-card {
+    flex: 1;
+    padding: 20px;
+    margin: 0 10px;
+    border-radius: 8px;
+    color: white;
+    text-align: center;
+}
+
+.info-card.blue {
+    background-color: #007bff;
+}
+
+.info-card.green {
+    background-color: #28a745;
+}
+
+.info-card.yellow {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.info-card.red {
+    background-color: #dc3545;
+}
+
+/* Ship Profile */
+.ship-profile, .owner-profile {
+    margin-bottom: 30px;
+}
+
+.ship-profile h2, .owner-profile h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #444;
+}
+
+/* Profile Grid */
+.profile-grid, .owner-grid {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.profile-image img, .owner-image img {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-details p, .owner-details p {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.profile-details strong, .owner-details strong {
+    color: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .ship-info-cards {
+        flex-direction: column;
+    }
+
+    .info-card {
+        margin-bottom: 15px;
+    }
+
+    .profile-grid, .owner-grid {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-image img, .owner-image img {
+        width: 100%;
+        max-width: 200px;
+    }
+}

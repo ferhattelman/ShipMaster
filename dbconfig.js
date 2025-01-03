@@ -1,6 +1,6 @@
 const config = {
     server: 'localhost',
-    database: 'ShipMaster',
+    database: 'ShipMasterDB',
     options: {
       encrypt: true, // Yerel ortam için false da yapılabilir
       trustServerCertificate: true

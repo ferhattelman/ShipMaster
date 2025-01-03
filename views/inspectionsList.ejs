@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspection Records</title>
+    <link rel="stylesheet" href="/assets/css/homeStyle.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+    <link rel="stylesheet" href="/assets/css/shipDetails.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .delete-button {
+            padding: 6px 12px;
+            font-size: 12px;
+            color: #fff;
+            background-color: #dc3545;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+
+        .header-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .header-buttons button {
+            font-size: 14px;
+        }
+
+        /* Modal Temel Stilleri */
+        .modal {
+            display: none;
+            /* Varsayılan olarak gizli */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Arka plan opaklığı */
+        }
+
+        /* Modal İçeriği */
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            /* Ortalansın */
+            padding: 20px;
+            border-radius: 8px;
+            width: 40%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Kapatma Butonu */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Form Grupları */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 10px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        /* Form Butonları */
+        .form-actions {
+            text-align: right;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+
+<body>
+    <header
+        style="display: flex; justify-content: center; align-items: center; width: 100%; height: 60px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;">
+        <div class="logosec" style="text-align: center;">
+            <div class="logo" style="font-size: 24px; font-weight: bold; color: #333;">ShipMaster</div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="navcontainer">
+            <nav class="nav">
+                <div class="nav-upper-options">
+                    <div class="nav-option" onclick="location.href='/home'">
+                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
+                            class="nav-img" alt="dashboard">
+                        <h3>Ana Sayfa</h3>
+                    </div>
+                    <div class="nav-option" onclick="location.href='/ships'">
+                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
+                            class="nav-img" alt="ships">
+                        <h3>Gemiler</h3>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="main content-section">
+            <div class="ship-details-container">
+                <div class="ship-header">
+                    <h1>Inspections Details</h1>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="actions">
+                    <button onclick="window.location.href='/ship/<%= shipId %>'" class="btn btn-secondary">Back
+                        to Ship Details</button>
+                    <button id="openModalButton" class="btn btn-primary">Add Inspection</button>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Inspection Type</th>
+                            <th>Type Description</th>
+                            <th>Serious</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% inspections.forEach(inspection=> { %>
+                            <tr>
+                                <td>
+                                    <%= new Date(inspection.Time).toLocaleString() %>
+                                </td>
+                                <td>
+                                    <%= inspection.InspectionType %>
+                                </td>
+                                <td>
+                                    <%= inspection.TypeDescription %>
+                                </td>
+                                <td>
+                                    <%= inspection.Serious %>
+                                </td>
+                                <td>
+                                    <form method="POST"
+                                        action="/delete-inspection/<%= inspection.InspectionRecordId %>">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+        <!-- Modal -->
+        <div id="inspectionModal" class="modal">
+            <div class="modal-content">
+                <span id="closeModalButton" class="close">&times;</span>
+                <h2>Yeni Denetim Ekle</h2>
+                <form id="addInspectionForm">
+                    <div class="form-group">
+                        <label for="inspectionDateTime">Denetim Tarihi ve Saati:</label>
+                        <input type="datetime-local" id="inspectionDateTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="inspectionType">Denetim Türü:</label>
+                        <select id="inspectionType" required>
+                            <!-- Dinamik olarak doldurulacak -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="seriousType">Serious:</label>
+                        <select id="seriousType" required>
+                            <option value="Major">Major</option>
+                            <option value="Minor">Minor</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" id="closeModalButton2" class="btn btn-secondary">İptal</button>
+                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <script>
+        // Modal Elemanlarını Seç
+        const modal = document.getElementById("inspectionModal");
+        const closeModalButton = document.getElementById("closeModalButton");
+        const closeModalButton2 = document.getElementById("closeModalButton2");
+
+        // Modalı Aç
+        const openModalButton = document.getElementById('openModalButton');
+        const inspectionTypeSelect = document.getElementById('inspectionType');
+
+        openModalButton.addEventListener('click', () => {
+            inspectionTypeSelect.innerHTML = ''; // Eski verileri temizle
+
+            fetch('/api/inspection-types')
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(type => {
+                        const option = document.createElement('option');
+                        option.value = type.InspectionTypeId;
+                        option.textContent = type.TypeName;
+                        inspectionTypeSelect.appendChild(option);
+                    });
+                })
+                .catch(err => console.error('Error fetching inspection types:', err));
+
+            document.getElementById('inspectionModal').style.display = 'block'; // Modalı aç
+        });
+
+
+        // Modalı Kapat (X Butonu)
+        closeModalButton.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+
+        // Modalı Kapat (İptal Butonu)
+        closeModalButton2.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+
+        // Modal Dışına Tıklayınca Kapat
+        window.addEventListener("click", (event) => {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+
+        // Dinamik Veri Yükle
+        document.addEventListener('DOMContentLoaded', () => {
+            const shipId = window.location.pathname.split('/').pop(); // Dinamik olarak shipId al
+            const inspectionList = document.getElementById('inspectionList');
+
+            fetch(`/api/inspections/${shipId}`)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(inspection => {
+                        const inspectionItem = document.createElement('div');
+                        inspectionItem.className = 'inspection-item'; // CSS sınıfı
+                        inspectionItem.innerHTML = `
+                    <p><strong>Tarih:</strong> ${new Date(inspection.Time).toLocaleString()}</p>
+                    <p><strong>Tür:</strong> ${inspection.TypeName}</p>
+                `;
+                        inspectionList.appendChild(inspectionItem);
+                    });
+                })
+                .catch(err => console.error('Denetim verilerini alma hatası:', err));
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            const inspectionTypeSelect = document.getElementById('inspectionType');
+
+            // Denetim türlerini çek ve listeyi doldur
+            fetch('/api/inspection-types') // Backend'deki endpoint
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(type => {
+                        const option = document.createElement('option');
+                        option.value = type.InspectionTypeId; // InspectionTypeId değerini ayarla
+                        option.textContent = type.TypeName; // Görünen metni ayarla
+                        inspectionTypeSelect.appendChild(option);
+                    });
+                })
+                .catch(err => console.error('Error fetching inspection types:', err));
+        });
+
+
+
+
+        // Formu Gönder
+        document.getElementById('addInspectionForm').addEventListener('submit', event => {
+            event.preventDefault();
+
+            const inspectionDateTime = document.getElementById('inspectionDateTime').value;
+            const inspectionTypeId = document.getElementById('inspectionType').value;
+            const seriousType = document.getElementById('seriousType').value; // Yeni serious alanı
+            const shipId = window.location.pathname.split('/').pop(); // Dinamik olarak shipId al
+
+            fetch('/api/inspections', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    shipId: parseInt(shipId, 10), // shipId'yi gönder
+                    time: inspectionDateTime,
+                    inspectionTypeId: parseInt(inspectionTypeId, 10),
+                    serious: seriousType // Yeni serious alanını gönder
+                })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to add inspection');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Denetim başarıyla eklendi:', data);
+                    location.reload(); // Sayfayı yenile
+                })
+                .catch(err => console.error('Denetim ekleme hatası:', err));
+        });
+
+
+
+    </script>
+</body>
+
+</html>

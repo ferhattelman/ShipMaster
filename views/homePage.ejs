@@ -8,408 +8,11 @@
     <title>ShipMaster</title>
     <link rel="stylesheet" href="/assets/css/homeStyle.css">
     <link rel="stylesheet" href="/assets/css/responsive.css">
-
+    <link rel="stylesheet" href="/assets/css/homePageStyle.css">
     <style>
-        .content-section {
-            display: none;
-        }
-
-        .active {
-            display: block;
-        }
-
-        .deActive {
-            width: 250px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            padding: 0 30px 0 20px;
-            gap: 20px;
-            transition: all 0.1s ease-in-out;
-        }
-
-        .published {
-            color: white;
-            background-color: green;
-            padding: 5px;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .unpublished {
-            color: white;
-            background-color: red;
-            padding: 5px;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .item1 img {
-            max-width: 100px;
-            height: auto;
-        }
-
-        /* Genel ayarlar */
-        .report-container {
-            margin: 20px auto;
-            width: 90%;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            font-family: Arial, sans-serif;
-        }
-
-        .report-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .report-header h1 {
-            font-size: 24px;
-            color: #6a0dad;
-        }
-
-        .view {
-            background-color: #6a0dad;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .view:hover {
-            background-color: #530a87;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        thead th {
-            background-color: #f4f4f4;
-            color: #333;
-            padding: 10px;
-            text-align: left;
-            border-bottom: 2px solid #ddd;
-        }
-
-        tbody td {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-
-        tbody tr:hover {
-            background-color: #f9f9f9;
-        }
-
-        /* Görüntü sütunu */
-        .ship-image {
-            max-width: 100px;
-            height: auto;
-            border-radius: 5px;
-        }
-
-        /* Durumu kolon renkleri */
-        .status-ready {
-            color: white;
-            background-color: green;
-            text-align: center;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-
-        .status-not-ready {
-            color: white;
-            background-color: red;
-            text-align: center;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-
-        /* Butonlar */
-        .button-container {
-            margin-top: 20px;
-            text-align: right;
-        }
-
-        .action-button {
-            background-color: #6a0dad;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 14px;
-            margin-left: 10px;
-        }
-
-        .action-button:hover {
-            background-color: #530a87;
-        }
-
-        .action-button.delete {
-            background-color: #e74c3c;
-        }
-
-        .action-button.delete:hover {
-            background-color: #c0392b;
-        }
-
-        /* Modal Arkaplan */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Modal İçerik */
-        .modal-content {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            width: 400px;
-            max-width: 90%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            position: relative;
-        }
-
-        /* Modal Kapatma Butonu */
-        .close {
-            position: absolute;
-            right: 15px;
-            top: 10px;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #6a0dad;
-        }
-
-        .close:hover {
-            color: #530a87;
-        }
-
-        /* Form Grupları */
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        /* Kaydet Butonu */
-        .modal-submit-button {
-            background-color: #6a0dad;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        .modal-submit-button:hover {
-            background-color: #530a87;
-        }
-
-        /* Modal Stilleri */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            width: 400px;
-            max-width: 90%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-
-        .modal-content h2 {
-            margin-bottom: 15px;
-        }
-
-        .modal-content button {
-            margin: 10px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .modal-content button.delete {
-            background-color: #e74c3c;
-            color: white;
-        }
-
-        .modal-content button.delete:hover {
-            background-color: #c0392b;
-        }
-
-        .modal-content button {
-            background-color: #6a0dad;
-            color: white;
-        }
-
-        .modal-content button:hover {
-            background-color: #530a87;
-        }
-
-        .report-container {
-            margin: 20px auto;
-            width: 90%;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            font-family: Arial, sans-serif;
-        }
-
-        .report-header h1 {
-            font-size: 24px;
-            color: #6a0dad;
-        }
-
-        .action-button {
-            background-color: #6a0dad;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-
-        .action-button.delete {
-            background-color: #e74c3c;
-        }
-
-        .modal {
-            display: none;
-            /* Varsayılan olarak gizli */
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            /* Arka plan şeffaf */
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            width: 400px;
-            max-width: 90%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            font-family: Arial, sans-serif;
-        }
-
-        .modal-content h2 {
-            text-align: center;
-            font-size: 20px;
-            color: #4A4A4A;
-            margin-bottom: 20px;
-        }
-
-        .modal-content form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .modal-content label {
-            font-size: 14px;
-            color: #6a0dad;
-            font-weight: bold;
-        }
-
-        .modal-content input,
-        .modal-content select {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            width: 100%;
-        }
-
-        .modal-content input:focus,
-        .modal-content select:focus {
-            outline: none;
-            border-color: #6a0dad;
-            box-shadow: 0 0 5px rgba(106, 13, 173, 0.5);
-        }
-
-        .modal-content button {
-            background-color: #6a0dad;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .modal-content button:hover {
-            background-color: #530a87;
-        }
-
-        .modal-content .close {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 20px;
-            cursor: pointer;
-            color: #aaa;
-            transition: color 0.3s ease;
-        }
-
-        .modal-content .close:hover {
-            color: #6a0dad;
+        .ship-card-link {
+            text-decoration: none;
+            color: inherit;
         }
     </style>
 </head>
@@ -417,24 +20,13 @@
 <body>
 
     <!-- Header -->
-    <header>
-        <div class="logosec">
-            <div class="logo">ShipMaster</div>
-        </div>
-        <div class="message">
-            <p>Hoşgeldin, <span id="usernameDisplay"></span>!</p>
-            <script>
-                const username = localStorage.getItem("username");
-                if (username) {
-                    document.getElementById("usernameDisplay").textContent = username;
-                }
-            </script>
-            <div class="dp">
-                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180014/profile-removebg-preview.png"
-                    class="dpicn" alt="profile">
-            </div>
+    <header
+        style="display: flex; justify-content: center; align-items: center; width: 100%; height: 60px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;">
+        <div class="logosec" style="text-align: center;">
+            <div class="logo" style="font-size: 24px; font-weight: bold; color: #333;">ShipMaster</div>
         </div>
     </header>
+
 
     <div class="main-container">
         <!-- Sidebar -->
@@ -453,42 +45,25 @@
                         <h3>Gemiler</h3>
                     </div>
 
-                    <div class="nav-option option3" onclick="showSection('inspection-management')">
+                    <div class="nav-option option3" onclick="showSection('owners')">
                         <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/5.png"
                             class="nav-img" alt="report">
-                        <h3>Denetim Yönetimi</h3>
+                        <h3>Gemi Sahipleri</h3>
                     </div>
 
-                    <div class="nav-option option4">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/6.png"
-                            class="nav-img" alt="institution">
-                        <h3>Institution</h3>
-                    </div>
-
-                    <div class="nav-option option5">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183323/10.png"
-                            class="nav-img" alt="blog">
-                        <h3>Profile</h3>
-                    </div>
-
-                    <div class="nav-option option6">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/4.png"
-                            class="nav-img" alt="settings">
-                        <h3>Settings</h3>
-                    </div>
-
-                    <div class="nav-option logout">
+                    <div class="nav-option logout" id="logoutBtn">
                         <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/7.png"
-                            class="nav-img" alt="logout">
+                             class="nav-img" alt="logout">
                         <h3>Logout</h3>
                     </div>
+                    
                 </div>
             </nav>
         </div>
 
         <!-- Dashboard Section -->
         <div class="main content-section" id="dashboard">
-            <div class="report-container">
+            <!-- <div class="report-container">
                 <div class="report-header">
                     <h1 class="recent-Articles">Gemiler</h1>
                 </div>
@@ -519,456 +94,218 @@
                             <% }) %>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
 
 
-        <!-- SHIPS  -->
+        <!-- SHIPS -->
         <div class="main content-section" id="ships">
-            <div class="report-container">
-                <div class="report-header">
-                    <h1 class="recent-Articles">Gemiler</h1>
+            <div class="main">
+                <div class="ship-grid">
+                    <% ships.forEach(ship=> { %>
+                        <a href="/ship/<%= ship.ShipId %>" class="ship-card-link">
+                            <div class="ship-card">
+                                <div class="flag-container">
+                                    <img src="https://flagcdn.com/w320/<%= ship.CountryCode.toLowerCase() %>.png"
+                                        alt="Flag" class="country-flag" />
+                                </div>
+                                <img src="<%= ship.PhotoURL %>" alt="Ship Image" class="ship-image">
+                                <h3>
+                                    <%= ship.ShipName %>
+                                </h3>
+                                <p><strong>Owner:</strong>
+                                    <%= ship.OwnerName %>
+                                </p>
+                                <p><strong>Launch Date:</strong>
+                                    <%= ship.LaunchDate %>
+                                </p>
+                            </div>
+                        </a>
+                        <% }); %>
                 </div>
-                <div class="report-body">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>IMO Numarası</th>
-                                <th>Ülke</th>
-                                <th>Sahip</th>
-                                <th>Gemi Tipi</th>
-                                <th>Görüntü</th>
-                                <th>Durumu</th>
-                                <th>İşlemler</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% ships.forEach(ship=> { %>
-                                <tr>
-                                    <td>
-                                        <%= ship.IMO_Number %>
-                                    </td>
-                                    <td>
-                                        <%= ship.Flag_State %>
-                                    </td>
-                                    <td>
-                                        <%= ship.Owner_Info %>
-                                    </td>
-                                    <td>
-                                        <%= ship.Ship_Type %>
-                                    </td>
-                                    <td>
-                                        <img src="<%= ship.Photo %>" alt="Gemi Görüntüsü" class="ship-image" />
-                                    </td>
-                                    <td
-                                        class="<%= ship.Status === 'true' || ship.Status === true ? 'status-ready' : 'status-not-ready' %>">
-                                        <%= ship.Status==='true' || ship.Status===true ? 'Hazır' : 'Hazır Değil' %>
-                                    </td>
-                                    <td>
-                                        <button class="action-button delete"
-                                            onclick="showDeleteModal('<%= ship.IMO_Number %>')">Sil</button>
-                                    </td>
-                                </tr>
-                                <% }) %>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="button-container">
-                    <button class="action-button" onclick="showAddForm()">Ekle</button>
-                </div>
+
+
             </div>
         </div>
 
 
+        <!-- OWNERS -->
+        <div class="main content-section" id="owners">
+            <div class="owner-list-header">
+                <button onclick="openModal()" class="add-owner-button">Add Owner</button>
+            </div>
+            <div class="owner-grid">
+                <!-- Bu alan dinamik olarak doldurulacak -->
+            </div>
+        </div>
 
-
-        <!-- Modal -->
-        <div id="addFormModal" class="modal">
+        <!-- Add Owner Modal -->
+        <div id="addOwnerModal" class="modal">
             <div class="modal-content">
-                <!-- Modal Kapatma Butonu -->
-                <span class="close" onclick="closeAddForm()">&times;</span>
-                <h2 style="text-align: center; margin-bottom: 20px;">Yeni Gemi Ekle</h2>
-                <form id="addShipForm">
-                    <!-- IMO Numarası -->
-                    <div class="form-group">
-                        <label for="IMO_Number">IMO Numarası:</label>
-                        <input type="text" id="IMO_Number" name="IMO_Number" required placeholder="Örn: 123456789" />
+                <span class="close-button" onclick="closeModal()">×</span>
+                <div class="add-owner-container">
+                    <div class="add-owner-header">
+                        <h2>New Owner</h2>
                     </div>
+                    <form action="/add-owner" method="POST" enctype="multipart/form-data">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" name="name" placeholder="Enter owner name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="tel" id="phone" name="phone" placeholder="Enter phone number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-Mail</label>
+                                <input type="email" id="email" name="email" placeholder="Enter email address" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="country">Country</label>
+                                <select id="country" name="country" required>
+                                    <% countries.forEach(country=> { %>
+                                        <option value="<%= country.CountryCode %>">
+                                            <%= country.CountryName %>
+                                        </option>
+                                        <% }); %>
+                                </select>
 
-                    <!-- Ülke -->
-                    <div class="form-group">
-                        <label for="Flag_State">Ülke:</label>
-                        <input type="text" id="Flag_State" name="Flag_State" required placeholder="Örn: Türkiye" />
-                    </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="about">About</label>
+                                <select id="about" name="isPerson" class="form-control" required>
+                                    <option value="true">Individual</option>
+                                    <option value="false">Company</option>
+                                </select>
+                            </div>
 
-                    <!-- Sahip -->
-                    <div class="form-group">
-                        <label for="Owner_Info">Sahip:</label>
-                        <input type="text" id="Owner_Info" name="Owner_Info" required
-                            placeholder="Örn: ABC Shipping Co." />
-                    </div>
-
-                    <!-- Gemi Tipi -->
-                    <div class="form-group">
-                        <label for="Ship_Type">Gemi Tipi:</label>
-                        <input type="text" id="Ship_Type" name="Ship_Type" required placeholder="Örn: Tanker, Yat" />
-                    </div>
-
-                    <!-- Görüntü URL -->
-                    <div class="form-group">
-                        <label for="Photo">Görüntü URL:</label>
-                        <input type="text" id="Photo" name="Photo" required
-                            placeholder="Örn: https://example.com/image.jpg" />
-                    </div>
-
-                    <!-- Durumu -->
-                    <div class="form-group">
-                        <label for="Status">Durumu:</label>
-                        <select id="Status" name="Status">
-                            <option value="true">Hazır</option>
-                            <option value="false">Hazır Değil</option>
-                        </select>
-                    </div>
-
-                    <!-- Kaydet Butonu -->
-                    <button type="button" class="modal-submit-button" onclick="addShip()">Kaydet</button>
-                </form>
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <textarea id="address" name="address" class="form-control" rows="3"
+                                    placeholder="Enter address here" required></textarea>
+                            </div>
+                            <div class="form-group upload-photo">
+                                <label for="photo">Upload Photo</label>
+                                <input type="file" id="photo" name="photo" accept="image/*">
+                            </div>
+                        </div>
+                        <button type="submit" class="save-button">Save Owner Information</button>
+                    </form>
+                </div>
             </div>
         </div>
-
-        <!-- Silme Modalı -->
-        <div id="deleteModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeDeleteModal()">&times;</span>
-                <h2>Gemi Sil</h2>
-                <p id="deleteMessage">Bu gemiyi silmek istediğinize emin misiniz?</p>
-                <button class="action-button delete" onclick="confirmDelete()">Evet, Sil</button>
-                <button class="action-button" onclick="closeDeleteModal()">İptal</button>
-            </div>
-        </div>
-
-
-
-        <!-- Denetim Yönetimi -->
-
-        <div class="main content-section" id="inspection-management">
-            <div class="report-container">
-                <!-- Başlık ve Açıklama -->
-                <div class="report-header">
-                    <h1>Denetim Yönetimi</h1>
-                    <p>Denetimler ve sonuçlarını buradan yönetebilirsiniz.</p>
-                    <button class="action-button" onclick="showInspectionForm()">Denetim Ekle</button>
-                </div>
-
-                <!-- Denetim Tablosu -->
-                <div class="report-body">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Denetim ID</th>
-                                <th>IMO Numarası</th>
-                                <th>Denetim Tarihi</th>
-                                <th>Denetim Türü</th>
-                                <th>Sonuç</th>
-                            </tr>
-                        </thead>
-                        <tbody id="inspection-table">
-                            <!-- Dinamik içerik buraya eklenecek -->
-                        </tbody>
-                    </table>
-                </div>
-
-
-                <!-- Denetim Ekle Modal -->
-                <div id="addInspectionModal" class="modal">
-                    <div class="modal-content">
-                        <span class="close" onclick="closeAddInspectionModal()">&times;</span>
-                        <h2>Yeni Denetim Ekle</h2>
-                        <form id="addInspectionForm">
-                            <label for="IMO">IMO Numarası:</label>
-                            <input type="text" id="IMO" name="IMO" placeholder="123456789" required />
-
-                            <label for="Inspection_Date">Denetim Tarihi:</label>
-                            <input type="date" id="Inspection_Date" name="Inspection_Date" required />
-
-                            <label for="Inspection_Type">Denetim Türü:</label>
-                            <input type="text" id="Inspection_Type" name="Inspection_Type"
-                                placeholder="Güvenlik Denetimi" required />
-
-                            <label for="Inspection_Result">Sonuç:</label>
-                            <input type="text" id="Inspection_Result" name="Inspection_Result" placeholder="Başarılı"
-                                required />
-
-                            <button type="button" onclick="addInspection()">Kaydet</button>
-                        </form>
-
-
-                    </div>
-                </div>
-
-
-
-            </div>
-        </div>
-
-
     </div>
 
     <script>
-        function showSection(sectionId, buttonElement) {
+        // Modal Açma
+        function openModal() {
+            document.getElementById('addOwnerModal').style.display = 'block';
+        }
+
+        // Modal Kapatma
+        function closeModal() {
+            document.getElementById('addOwnerModal').style.display = 'none';
+        }
+
+        // Modal dışında bir yere tıklanırsa kapatma
+        window.onclick = function (event) {
+            const modal = document.getElementById('addOwnerModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+
+        document.querySelector("form").addEventListener("submit", function (e) {
+            const nameInput = document.getElementById("name").value.trim();
+            if (!nameInput) {
+                e.preventDefault();
+                alert("Name alanını doldurmanız gerekiyor!");
+            }
+        });
+
+
+    </script>
+
+
+
+
+
+
+
+    <script>
+        function showSection(sectionId) {
             // Tüm içerik bölümlerini gizle
             const sections = document.querySelectorAll('.content-section');
             sections.forEach(section => section.classList.remove('active'));
 
             // İlgili içeriği göster
-            document.getElementById(sectionId).classList.add('active');
-
-            // Menü butonlarının aktif sınıfını kaldır
-            const buttons = document.querySelectorAll('.menu button');
-            buttons.forEach(button => button.classList.remove('active'));
-
-            // Tıklanan butona aktif sınıfını ekle
-            buttonElement.classList.add('active');
+            const sectionToShow = document.getElementById(sectionId);
+            if (sectionToShow) {
+                sectionToShow.classList.add('active');
+            } else {
+                console.error(`Section with ID "${sectionId}" not found.`);
+            }
         }
 
     </script>
 
     <script>
-        // "Yeni Gemi Ekle" formunu gösterir
-        function showAddForm() {
-            const addFormModal = document.getElementById('addFormModal');
-            if (addFormModal) {
-                addFormModal.style.display = 'flex'; // Formu açar
-            } else {
-                console.error('Form modal bulunamadı!');
-            }
-        }
-
-        // "Yeni Gemi Ekle" formunu kapatır
-        function closeAddForm() {
-            const addFormModal = document.getElementById('addFormModal');
-            if (addFormModal) {
-                addFormModal.style.display = 'none'; // Formu kapatır
-            } else {
-                console.error('Form modal bulunamadı!');
-            }
-        }
-
-        // Yeni gemi ekleme işlemi
-        async function addShip() {
-            // Form verilerini al
-            const formData = {
-                IMO_Number: document.getElementById('IMO_Number')?.value.trim(),
-                Flag_State: document.getElementById('Flag_State')?.value.trim(),
-                Owner_Info: document.getElementById('Owner_Info')?.value.trim(),
-                Ship_Type: document.getElementById('Ship_Type')?.value.trim(),
-                Photo: document.getElementById('Photo')?.value.trim(),
-                Status: document.getElementById('Status')?.value,
-            };
-
-            // Formdaki tüm alanların doldurulup doldurulmadığını kontrol et
-            if (Object.values(formData).some(value => !value)) {
-                alert('Lütfen tüm alanları doldurun.');
-                return;
-            }
-
+        async function fetchOwners() {
             try {
-                // API'ye POST isteği gönder
-                const response = await fetch('/addShip', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
+                const response = await fetch('/owners');
+                const data = await response.json();
+                const owners = data.owners;
+
+                const ownersContainer = document.querySelector('.owner-grid');
+                owners.forEach(owner => {
+                    const ownerCard = `
+            <div class="owner-card">
+              <div class="owner-header">
+                <img src="${owner.PhotoURL}" alt="Owner Photo" class="owner-image">
+                <h3>${owner.Name}</h3>
+              </div>
+              <p><strong>About:</strong> ${owner.IsPerson ? 'This owner is an individual.' : 'This owner is a company.'
+                        }</p>
+              <p><i class="fa fa-address-card"></i> <strong>Address:</strong> ${owner.Address}</p>
+              <p><i class="fa fa-globe"></i> <strong>Country:</strong> ${owner.CountryName}
+                <img
+                  src="https://flagsapi.com/${owner.CountryCode}/flat/32.png"
+                  alt="${owner.CountryName} Flag"
+                >
+              </p>
+              <p><i class="fa fa-phone"></i> <strong>Phone:</strong> ${owner.Phone}</p>
+  
+              <!-- EJS ifadesi yerine, JavaScript template literal ile ShipOwnerId'yi ekliyoruz -->
+              <button onclick="location.href='/owner/${owner.ShipOwnerId}'">
+                View Details
+              </button>
+            </div>
+          `;
+                    ownersContainer.innerHTML += ownerCard;
                 });
-
-                if (response.ok) {
-                    alert('Gemi başarıyla eklendi!');
-                    location.reload(); // Sayfayı yeniler
-                } else {
-                    const errorMessage = await response.text();
-                    alert(`Gemi eklenirken bir hata oluştu: ${errorMessage}`);
-                }
             } catch (error) {
-                console.error('Gemi eklenirken hata:', error);
-                alert('Bir bağlantı hatası oluştu. Lütfen tekrar deneyin.');
+                console.error('Owners verisi alınırken hata oluştu:', error);
             }
         }
+
+        // Sayfa yüklendiğinde owners verisini çek
+        document.addEventListener('DOMContentLoaded', fetchOwners);
     </script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                const response = await fetch('/inspections');
-                const inspections = await response.json();
+        // Logout butonunu seçin
+        const logoutBtn = document.getElementById('logoutBtn');
 
-                // Verileri tabloya ekle
-                const tbody = document.querySelector('#inspection-table-body');
-                tbody.innerHTML = ''; // Önce mevcut satırları temizle
+        // Tıklama olayını dinleyin
+        logoutBtn.addEventListener('click', () => {
+            // index.html sayfasına yönlendirin
+            window.location.href = '/index.html';
 
-                if (inspections.length > 0) {
-                    inspections.forEach(inspection => {
-                        const row = `
-                    <tr>
-                        <td>${inspection.Inspection_ID}</td>
-                        <td>${inspection.IMO_Number}</td>
-                        <td>${inspection.Inspection_Date}</td>
-                        <td>${inspection.Inspection_Type}</td>
-                        <td>${inspection.Inspection_Result}</td>
-                    </tr>
-                `;
-                        tbody.innerHTML += row;
-                    });
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="5">Hiçbir denetim kaydı bulunamadı.</td></tr>';
-                }
-            } catch (error) {
-                console.error('Denetim verileri alınamadı:', error);
-            }
         });
 
     </script>
 
-
-
-    <script>
-        let currentShipId = null;
-
-        function showDeleteModal(imoNumber) {
-            currentShipId = imoNumber;
-            document.getElementById('deleteMessage').textContent = `IMO Numarası ${imoNumber} olan gemiyi silmek istediğinize emin misiniz?`;
-            document.getElementById('deleteModal').style.display = 'flex';
-        }
-
-        function closeDeleteModal() {
-            document.getElementById('deleteModal').style.display = 'none';
-        }
-
-        async function confirmDelete() {
-            if (!currentShipId) return;
-
-            try {
-                const response = await fetch(`/deleteShip/${currentShipId}`, {
-                    method: 'DELETE',
-                });
-
-                if (response.ok) {
-                    alert('Gemi başarıyla silindi!');
-                    location.reload();
-                } else {
-                    alert('Gemi silinirken bir hata oluştu.');
-                }
-            } catch (error) {
-                console.error('Gemi silinirken hata:', error);
-            } finally {
-                closeDeleteModal();
-            }
-        }
-    </script>
-
-    <script>
-
-        function showInspectionForm() {
-            const addInspectionModal = document.getElementById('addInspectionModal');
-            if (addInspectionModal) {
-                addInspectionModal.style.display = 'flex'; // Modalı görünür yapar
-            } else {
-                console.error('Denetim ekleme modalı bulunamadı!');
-            }
-        }
-
-        function closeAddInspectionModal() {
-            const addInspectionModal = document.getElementById('addInspectionModal');
-            if (addInspectionModal) {
-                addInspectionModal.style.display = 'none'; // Modalı kapatır
-            } else {
-                console.error('Denetim ekleme modalı bulunamadı!');
-            }
-        }
-
-        async function addInspection() {
-            const formData = {
-                IMO_Number: document.getElementById('IMO').value.trim(),
-                Inspection_Date: document.getElementById('Inspection_Date').value,
-                Inspection_Type: document.getElementById('Inspection_Type').value.trim(),
-                Inspection_Result: document.getElementById('Inspection_Result').value.trim(),
-            };
-
-            console.log('Form Verisi:', formData);
-
-            if (!formData.IMO_Number || !formData.Inspection_Date || !formData.Inspection_Type || !formData.Inspection_Result) {
-                alert('Lütfen tüm alanları doldurun.');
-                return;
-            }
-
-            try {
-                const response = await fetch('/addInspection', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                });
-
-                if (response.ok) {
-                    alert('Denetim başarıyla eklendi!');
-                    location.reload();
-                } else {
-                    const error = await response.text();
-                    alert(`Hata: ${error}`);
-                }
-            } catch (error) {
-                console.error('Denetim eklenirken hata:', error);
-            }
-        }
-
-
-    </script>
-
-    <script>
-        // Verileri Çek ve Tabloya Ekle
-        async function fetchInspections() {
-            try {   
-                const response = await fetch('/api/inspections');
-                if (!response.ok) {
-                    throw new Error(`Veriler getirilemedi: ${response.status} ${response.statusText}`);
-                }
-
-                const inspections = await response.json();
-                const tableBody = document.getElementById('inspection-table');
-                let tableContent = ''; // Tablo içeriğini toplamak için değişken
-
-                if (inspections.length > 0) {
-                    inspections.forEach((inspection) => {
-                        tableContent += `
-                        <tr>
-                            <td>${inspection.Inspection_ID}</td>
-                            <td>${inspection.IMO_Number}</td>
-                            <td>${new Date(inspection.Inspection_Date).toLocaleDateString()}</td>
-                            <td>${inspection.Inspection_Type}</td>
-                            <td>${inspection.Inspection_Result}</td>
-                        </tr>
-                    `;
-                    });
-                } else {
-                    tableContent = `
-                    <tr>
-                        <td colspan="5">Hiçbir denetim kaydı bulunamadı.</td>
-                    </tr>
-                `;
-                }
-
-                // Toplanan içerik bir kerede tabloya eklenir
-                tableBody.innerHTML = tableContent;
-
-            } catch (error) {
-                console.error('Veri çekme hatası:', error.message);
-            }
-        }
-
-        // Sayfa Yüklendiğinde Verileri Getir
-        document.addEventListener('DOMContentLoaded', fetchInspections);
-    </script>
 
 </body>
 

@@ -1,0 +1,23 @@
+<!-- header.ejs -->
+<header>
+    <div class="logosec">
+      <div class="logo">ShipMaster</div>
+    </div>
+    <div class="message">
+      <p>Hoşgeldin, <span id="usernameDisplay"></span>!</p>
+      <script>
+        const username = localStorage.getItem("username");
+        if (username) {
+          document.getElementById("usernameDisplay").textContent = username;
+        }
+      </script>
+      <div class="dp">
+        <img
+          src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180014/profile-removebg-preview.png"
+          class="dpicn"
+          alt="profile"
+        >
+      </div>
+    </div>
+  </header>
+  

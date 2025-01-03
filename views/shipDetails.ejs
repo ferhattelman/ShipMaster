@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ship Details</title>
+    <link rel="stylesheet" href="/assets/css/homeStyle.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+    <link rel="stylesheet" href="/assets/css/shipDetails.css">
+    <style>
+        .info-card {
+            display: inline-block;
+            width: 22%;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .info-card h2 {
+            margin: 10px 0;
+        }
+
+        .info-card.blue {
+            background-color: #007BFF;
+        }
+
+        .info-card.green {
+            background-color: #a72876;
+        }
+
+        .info-card.yellow {
+            background-color: #0787ff;
+        }
+
+        .info-card.red {
+            background-color: #94dc35;
+        }
+
+        .info-card:hover {
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            transform: scale(1.05);
+        }
+
+        .profile-grid,
+        .owner-grid {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .profile-image img,
+        .owner-image img {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header
+        style="display: flex; justify-content: center; align-items: center; width: 100%; height: 60px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;">
+        <div class="logosec" style="text-align: center;">
+            <div class="logo" style="font-size: 24px; font-weight: bold; color: #333;">ShipMaster</div>
+        </div>
+    </header>
+
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="navcontainer">
+            <nav class="nav">
+                <div class="nav-upper-options">
+                    <div class="nav-option" onclick="location.href='/home'">
+                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
+                            class="nav-img" alt="dashboard">
+                        <h3>Ana Sayfa</h3>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Content Section -->
+        <div class="main content-section">
+            <div class="ship-details-container">
+                <div class="ship-header">
+                    <h1>Ship Details</h1>
+                </div>
+
+                <div class="ship-info-cards">
+                    <div class="info-card green" onclick="navigateToEquipments(<%= ship.ShipId %>)">
+                        <h2>Equipments</h2>
+                        <p>More info</p>
+                    </div>
+                    <div class="info-card yellow" onclick="navigateToMaintenances(<%= ship.ShipId %>)">
+                        <h2>Maintenances</h2>
+                        <p>More info</p>
+                    </div>
+                    <div class="info-card red" onclick="navigateToInspections(<%= ship.ShipId %>)">
+                        <h2>Inspections</h2>
+                        <p>More info</p>
+                    </div>
+                </div>
+
+                <div class="ship-profile">
+                    <h2>Ship Profile</h2>
+                    <div class="profile-grid">
+                        <div class="profile-image">
+                            <img src="<%= ship.PhotoURL %>" alt="Ship Image">
+                        </div>
+                        <div class="profile-details">
+                            <p><strong>IMO Number:</strong>
+                                <%= ship.IMONumber %>
+                            </p>
+                            <p><strong>Name:</strong>
+                                <%= ship.ShipName %>
+                            </p>
+                            <p><strong>Type:</strong>
+                                <%= ship.Type %>
+                            </p>
+                            <p><strong>Flag State:</strong>
+                                <%= ship.CountryName %>
+                            </p>
+                            <p><strong>Launch Date:</strong>
+                                <%= new Date(ship.LaunchDate).toLocaleDateString() %>
+                            </p>
+
+                            <!-- Edit Button -->
+                            <button class="btn btn-primary" onclick="openModal('editShipModal')">Edit</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="owner-profile">
+                    <h2>Ship Owner's Profile</h2>
+                    <% if (owner) { %>
+                        <div class="owner-grid">
+                            <div class="owner-image">
+                                <img src="<%= owner.PhotoURL %>" alt="Owner Photo">
+                            </div>
+                            <div class="owner-details">
+                                <p><strong>Name:</strong>
+                                    <%= owner.Name %>
+                                </p>
+                                <p><strong>Phone:</strong>
+                                    <%= owner.Phone %>
+                                </p>
+                                <p><strong>Address:</strong>
+                                    <%= owner.Address %>
+                                </p>
+                                <p><strong>Country:</strong>
+                                    <%= owner.CountryName %>
+                                </p>
+                            </div>
+                        </div>
+                        <% } else { %>
+                            <p>No owner information available.</p>
+                            <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Ship Modal -->
+        <div id="editShipModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditShipModal()">&times;</span>
+                <h2>Edit Ship Details</h2>
+                <form id="editShipForm">
+                    <input type="hidden" id="shipId" name="shipId" value="<%= ship.ShipId %>">
+                    <!-- IMO Number -->
+                    <div class="form-group">
+                        <label for="editIMONumber">IMO Number:</label>
+                        <input type="text" id="editIMONumber" name="imoNumber" value="<%= ship.IMONumber %>" required>
+                    </div>
+
+                    <!-- Name -->
+                    <div class="form-group">
+                        <label for="editShipName">Name:</label>
+                        <input type="text" id="editName" name="name" value="<%= ship.ShipName %>" required>
+                    </div>
+
+                    <!-- Flag State -->
+                    <div class="form-group">
+                        <label for="editFlagState">Flag State:</label>
+                        <select id="editFlagState" name="flagState" required>
+                            <option value="" disabled>Select a country</option>
+                            <!-- API'den gelen ülkeler burada doldurulacak -->
+                        </select>
+
+                    </div>
+
+                    <!-- Type (Non-editable) -->
+                    <div class="form-group">
+                        <label for="shipType">Type:</label>
+                        <input type="text" id="shipType" value="<%= ship.Type %>" disabled>
+                    </div>
+
+                    <!-- Launch Date (Non-editable) -->
+                    <div class="form-group">
+                        <label for="launchDate">Launch Date:</label>
+                        <input type="text" id="launchDate" value="<%= new Date(ship.LaunchDate).toLocaleDateString() %>"
+                            disabled>
+                    </div>
+
+                    <!-- Save Changes Button -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" class="btn btn-danger" onclick="openDeleteModal()">Delete</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <!-- Delete Confirmation Modal -->
+        <div id="deleteModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeDeleteModal()">&times;</span>
+                <h2>Are you sure?</h2>
+                <p>Do you really want to delete this ship? This process cannot be undone.</p>
+                <div class="form-actions">
+                    <button class="btn btn-danger" onclick="deleteShip()">Delete</button>
+                    <button class="btn btn-secondary" onclick="closeDeleteModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <script>
+
+        function navigateToEquipments(shipId) {
+            console.log('ShipId:', shipId); // ShipId değerini kontrol etmek için log yazdırın
+            if (!shipId) {
+                alert('ShipId is missing or invalid!');
+                return;
+            }
+            window.location.href = `/equipments/${shipId}`;
+        }
+
+
+
+
+        function navigateToMaintenances(shipId) {
+            window.location.href = `/maintenancesList/${shipId}`;
+        }
+
+        function navigateToInspections(shipId) {
+            const url = `/inspections/${shipId}`;
+            window.location.href = url;
+        }
+
+    </script>
+    <script>
+        // Modal açma
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        // Modal kapatma
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function openEditShipModal() {
+            document.getElementById('editShipModal').style.display = 'flex';
+        }
+
+        function closeEditShipModal() {
+            document.getElementById('editShipModal').style.display = 'none';
+        }
+
+        function openDeleteShipModal() {
+            document.getElementById('deleteShipModal').style.display = 'flex';
+        }
+
+        function closeDeleteShipModal() {
+            document.getElementById('deleteShipModal').style.display = 'none';
+        }
+
+        document.getElementById('editShipForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Input alanlarını seçiyoruz
+            const imoNumberInput = document.getElementById('editIMONumber');
+            const shipNameInput = document.getElementById('editName');
+            const flagStateSelect = document.getElementById('editFlagState'); // Doğru değişken adı burada
+
+            // Değerleri kontrol et ve al
+            console.log('Ship Name Value:', shipNameInput.value); // ShipName değeri burada görünecek
+            if (!shipNameInput.value) {
+                alert('Ship name cannot be empty.');
+                return;
+            }
+
+            // Sunucuya gönderilecek veriyi hazırlıyoruz
+            const formData = {
+                imoNumber: imoNumberInput.value, // value ile değeri alıyoruz
+                shipName: shipNameInput.value, // value ile değeri alıyoruz
+                flagState: flagStateSelect.value, // value ile seçilen değeri alıyoruz
+            };
+
+            // Fetch API ile PUT isteği gönder
+            fetch(`/ship/${shipId}/edit`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData), // JSON formatında veri gönder
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    if (data.success) {
+                        alert('Ship updated successfully!');
+                        window.location.reload(); // Güncellemeden sonra sayfayı yenile
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch((error) => console.error('Error:', error));
+        });
+
+
+
+
+
+
+
+        function openDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        function deleteShip() {
+            const shipId = '<%= ship.ShipId %>'; // Gemi ID'sini alın
+
+            fetch(`/ship/<%= ship.ShipId %>/delete`, {
+                method: 'DELETE',
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        alert('Ship deleted successfully!');
+                        window.location.href = '/ships'; // Silme işlemi sonrası gemi listesine yönlendirin
+                    } else {
+                        alert('Failed to delete the ship.');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error deleting ship:', error);
+                });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tüm modalları gizle
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.style.display = 'none';
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const flagStateSelect = document.getElementById('editFlagState');
+            const currentCountry = '<%= ship.CountryName %>'; // Mevcut ülke bilgisi
+
+            if (!flagStateSelect) {
+                console.error('Flag State select element not found.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/countries');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const countries = await response.json();
+
+                countries.forEach(country => {
+                    const option = document.createElement('option');
+                    option.value = country.CountryCode;
+                    option.textContent = country.CountryName;
+
+                    if (country.CountryName === currentCountry) {
+                        option.selected = true; // Mevcut ülkeyi seçili yap
+                    }
+
+                    flagStateSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching countries:', error.message);
+            }
+        });
+
+
+
+    </script>
+    <script>
+        const shipId = <%= ship.ShipId %>;
+        console.log('Ship ID:', shipId); // Ship ID'nin doğru şekilde geldiğini kontrol edin
+    </script>
+
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .modal-content h2 {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: red;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .form-actions button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .form-actions button:hover {
+            background-color: #0056b3;
+        }
+
+        .form-actions .btn-danger {
+            background-color: #dc3545;
+        }
+
+        .form-actions .btn-danger:hover {
+            background-color: #bd2130;
+        }
+
+        input[disabled] {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+            color: #6c757d;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        /* Dropdown Stilleri */
+        select#editFlagState {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            appearance: none;
+            /* Modern tarayıcılarda ok simgesini kaldırır */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23666" d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px 16px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        select#editFlagState:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            outline: none;
+        }
+
+        /* Genel Form Stilleri */
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-actions button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button.btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        button.btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        button.btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        button.btn-danger:hover {
+            background-color: #a71d2a;
+        }
+    </style>
+
+    
+
+
+</body>
+
+</html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= owner.Name %> - Profile
+    </title>
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="/assets/css/homeStyle.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+    <link rel="stylesheet" href="/assets/css/ownerDetail.css">
+    <style>
+        a {
+            text-decoration: none;
+            /* Alt çizgiyi kaldırır */
+            color: inherit;
+            /* Rengini değiştirmez, ebeveyn rengini kullanır */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header
+        style="display: flex; justify-content: center; align-items: center; width: 100%; height: 60px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;">
+        <div class="logosec" style="text-align: center;">
+            <div class="logo" style="font-size: 24px; font-weight: bold; color: #333;">ShipMaster</div>
+        </div>
+    </header>
+
+
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="navcontainer">
+            <nav class="nav">
+                <div class="nav-upper-options">
+                    <div class="nav-option option1">
+                        <!-- Ana Sayfa -->
+                        <a href="/home#owners">
+                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
+                                class="nav-img" alt="dashboard">
+                            <h3>Ana Sayfa</h3>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="main content-section">
+            <!-- Owner Profile Section -->
+            <h2>Owner Profile</h2>
+            <div class="owner-actions">
+                <button id="editOwnerBtn" class="btn btn-primary">Edit</button>
+            </div>
+            <div class="owner-profile">
+                <div class="profile-info">
+                    <img src="<%= owner.PhotoURL || 'https://via.placeholder.com/150' %>" alt="Owner Photo"
+                        class="profile-image">
+                    <div class="profile-details">
+                        <p><strong>Name:</strong>
+                            <%= owner.Name %>
+                        </p>
+                        <p><strong>Phone:</strong>
+                            <%= owner.Phone %>
+                        </p>
+                        <p><strong>E-Mail:</strong>
+                            <%= owner.Email %>
+                        </p>
+                        <p><strong>Address:</strong>
+                            <%= owner.Address %>
+                        </p>
+                        <p><strong>About:</strong>
+                            <%= owner.IsPerson ? 'This owner is an individual.' : 'This owner is a company.' %>
+                        </p>
+                        <p><strong>Country:</strong>
+                            <%= owner.CountryName %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- Tabs for Ship List and Add Ship -->
+            <div class="tabs">
+                <ul class="tab-menu">
+                    <li class="active" onclick="showTab('ship-list')">Ship List</li>
+                    <li onclick="showTab('add-ship')">Add Ship</li>
+                </ul>
+
+                <!-- Ship List Section -->
+                <div id="ship-list" class="tab-content active">
+                    <h3>Ships Owned by <%= owner.Name %>
+                    </h3>
+                    <div class="ship-grid">
+                        <% ships.forEach(ship=> { %>
+                            <div class="ship-card">
+                                <img src="<%= ship.PhotoURL || 'https://via.placeholder.com/150' %>" alt="Ship Image"
+                                    class="ship-image">
+                                <h4>
+                                    <%= ship.ShipName %>
+                                </h4>
+                                <p>IMO: <%= ship.IMONumber %>
+                                </p>
+                                <p>Launch Date: <%= ship.LaunchDate ? ship.LaunchDate.toISOString().split('T')[0]
+                                        : 'N/A' %>
+                                </p>
+                            </div>
+                            <% }) %>
+                    </div>
+                </div>
+
+                <div id="add-ship" class="tab-content">
+                    <h3>Add a New Ship</h3>
+                    <form action="/add-ship" method="post" enctype="multipart/form-data" class="add-ship-form">
+                        <input type="hidden" name="ownerId" value="<%= owner.ShipOwnerId %>">
+                        <div class="form-group">
+                            <label for="shipName">Ship Name</label>
+                            <input type="text" name="shipName" id="shipName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="imoNumber">IMO Number</label>
+                            <input type="number" name="imoNumber" id="imoNumber" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="launchDate">Launch Date</label>
+                            <input type="date" name="launchDate" id="launchDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="countryCode">Flag State</label>
+                            <select name="countryCode" id="countryCode">
+                                <% countries.forEach(country=> { %>
+                                    <option value="<%= country.CountryCode %>">
+                                        <%= country.CountryName %>
+                                    </option>
+                                    <% }) %>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="shipTypeId">Ship Type</label>
+                            <select name="shipTypeId" id="shipTypeId" required>
+                                <!-- Dropdown dinamik olarak doldurulacak -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="photo">Photo</label>
+                            <input type="file" name="photo" id="photo" accept="image/*" required>
+                        </div>
+                        <button type="submit" class="save-button">Save</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="editOwnerModal" class="modal">
+            <div class="modal-content">
+                <span class="close" id="closeEditOwnerModal">&times;</span>
+                <h2>Edit Owner Details</h2>
+                <form id="editOwnerForm">
+                    <div class="form-group">
+                        <label for="editOwnerName">Name:</label>
+                        <input type="text" id="editOwnerName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editOwnerPhone">Phone:</label>
+                        <input type="text" id="editOwnerPhone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editOwnerEmail">E-Mail:</label>
+                        <input type="email" id="editOwnerEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editOwnerAddress">Address:</label>
+                        <input type="text" id="editOwnerAddress" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editOwnerCountry">Country:</label>
+                        <select id="editOwnerCountry" name="country" required>
+                            <!-- Ülkeler buraya yüklenecek -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editOwnerAbout">About:</label>
+                        <textarea id="editOwnerAbout" name="about" readonly>This field cannot be edited.</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button id="deleteOwnerBtn" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            // Show the selected tab
+            document.getElementById(tabId).classList.add('active');
+            // Update the tab menu
+            document.querySelectorAll('.tab-menu li').forEach(li => li.classList.remove('active'));
+            document.querySelector(`.tab-menu li[onclick="showTab('${tabId}')"]`).classList.add('active');
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/ship-types'); // ShipTypes API'sini çağır
+                const shipTypes = await response.json();
+
+                const shipTypeDropdown = document.getElementById('shipTypeId');
+
+                // Dropdown'u doldur
+                shipTypes.forEach(shipType => {
+                    const option = document.createElement('option');
+                    option.value = shipType.ShipTypeId;
+                    option.textContent = `${shipType.ShipTypeName}`;
+                    shipTypeDropdown.appendChild(option);
+                });
+            } catch (error) {
+                console.error('ShipTypes verisi alınırken hata oluştu:', error);
+            }
+        });
+
+    </script>
+
+    <script>
+        document.getElementById('editOwnerBtn').addEventListener('click', async () => {
+            const modal = document.getElementById('editOwnerModal');
+            modal.style.display = 'block';
+
+            const countrySelect = document.getElementById('editOwnerCountry');
+            const currentCountry = '<%= owner.CountryName %>'; // Mevcut ülke bilgisi
+
+            try {
+                const response = await fetch('/countries'); // Ülke listesini al
+                const countries = await response.json();
+
+                countrySelect.innerHTML = ''; // Önce listeyi temizle
+                countries.forEach(country => {
+                    const option = document.createElement('option');
+                    option.value = country.CountryCode;
+                    option.textContent = country.CountryName;
+
+                    if (country.CountryName === currentCountry) {
+                        option.selected = true; // Mevcut ülkeyi seçili yap
+                    }
+
+                    countrySelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching countries:', error);
+            }
+        });
+
+        // Modal kapatma
+        document.getElementById('closeEditOwnerModal').addEventListener('click', () => {
+            document.getElementById('editOwnerModal').style.display = 'none';
+        });
+
+        document.getElementById('editOwnerForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const ownerId = '<%= owner.OwnerId %>'; // Owner ID
+            const formData = new FormData(this);
+
+            fetch(`/owner/${ownerId}/edit`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: formData.get('name'),
+                    phone: formData.get('phone'),
+                    email: formData.get('email'),
+                    address: formData.get('address'),
+                    country: formData.get('country'),
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Owner updated successfully!');
+                        location.reload(); // Sayfayı yenile
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => console.error('Error updating owner:', error));
+        });
+
+        document.getElementById('deleteOwnerBtn').addEventListener('click', async () => {
+            const confirmDelete = confirm('Are you sure you want to delete this owner? This action cannot be undone.');
+
+            if (confirmDelete) {
+                // URL'den ownerId'yi almak
+                const ownerId = window.location.pathname.split('/').pop(); // URL'nin sonundaki ID'yi alır
+
+                try {
+                    // DELETE isteği gönder
+                    const response = await fetch(`/owner/${ownerId}`, {
+                        method: 'DELETE',
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        alert('Owner deleted successfully!');
+                        window.location.href = '/home'; // Sahiplerin listelendiği sayfaya yönlendir
+                    } else {
+                        alert(data.message || 'Failed to delete the owner.');
+                    }
+                } catch (error) {
+                    console.error('Error deleting owner:', error);
+                    alert('An error occurred while trying to delete the owner.');
+                }
+            }
+        });
+
+    </script>
+
+    <style>
+        /* Genel Modal Tasarımı */
+        .modal {
+            display: none;
+            /* Başlangıçta görünmez */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Arkaplan karartması */
+        }
+
+        /* Modal İçerik Tasarımı */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            /* Ortalamak için */
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #888;
+            width: 50%;
+            /* Genişlik */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Kapatma Butonu */
+        .modal-content .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .modal-content .close:hover,
+        .modal-content .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+
+        /* Form İçerisindeki Alanlar */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            resize: none;
+            background-color: #f9f9f9;
+            color: #555;
+        }
+
+        /* Butonlar */
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button.btn-primary {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        button.btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        button.btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        button.btn-danger:hover {
+            background-color: #a71d2a;
+        }
+
+        /* Modal Fade In Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+
+    <script>
+        document.querySelector('.add-ship-form').addEventListener('submit', function (event) {
+            const photoInput = document.getElementById('photo');
+
+            // Fotoğraf eklenip eklenmediğini kontrol et
+            if (!photoInput.value) {
+                event.preventDefault(); // Form gönderimini durdur
+                alert('Please upload a photo before saving!');
+            }
+        });
+    </script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment List</title>
+    <link rel="stylesheet" href="/assets/css/homeStyle.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+    <link rel="stylesheet" href="/assets/css/shipDetails.css">
+    <link rel="stylesheet" href="/assets/css/equipmentList.css">
+    <style>
+        .equipment-container {
+            width: 80%;
+            margin: 20px auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .equipment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .equipment-table th,
+        .equipment-table td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .equipment-table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .equipment-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .equipment-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .active {
+            color: green;
+            font-weight: bold;
+        }
+
+        .inactive {
+            color: red;
+            font-weight: bold;
+        }
+
+        .details-btn {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .details-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .add-equipment-btn {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .add-equipment-btn:hover {
+            background-color: #0056b3;
+        }
+
+
+        /* Modal Düzenlemesi */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Arka plan opaklığı artırıldı */
+            justify-content: center;
+            align-items: center;
+            /* Ortaladı */
+            display: flex;
+            /* Modalı ortalamak için flex eklendi */
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 40%;
+            /* Orta boyut */
+            max-width: 600px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.3s ease-in-out;
+            /* Animasyon efekti */
+        }
+
+        /* Hata Mesajları ve Düzenleme */
+        .close {
+            color: #333;
+            float: right;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #ff0000;
+        }
+
+        .modal-content h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-content input,
+        .modal-content select,
+        .modal-content textarea {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .modal-content button {
+            margin-top: 15px;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal-content button:hover {
+            background-color: #0056b3;
+        }
+        .btn-back {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            justify-content: flex-end;
+        }
+
+        .btn-back:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+
+    </style>
+</head>
+
+<body>
+    <header style="display: flex; justify-content: center; align-items: center; width: 100%; height: 60px; background-color: #f8f9fa; border-bottom: 1px solid #ddd;">
+        <div class="logosec" style="text-align: center;">
+            <div class="logo" style="font-size: 24px; font-weight: bold; color: #333;">ShipMaster</div>
+        </div>
+    </header>
+    
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="navcontainer">
+            <nav class="nav">
+                <div class="nav-upper-options">
+                    <div class="nav-option" onclick="location.href='/home'">
+                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"
+                            class="nav-img" alt="dashboard">
+                        <h3>Ana Sayfa</h3>
+                    </div>
+                    <div class="nav-option" onclick="location.href='/ships'">
+                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
+                            class="nav-img" alt="ships">
+                        <h3>Gemiler</h3>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="main content-section">
+            <div class="ship-details-container">
+                <div class="ship-header">
+                    <h1>Equipment Details</h1>
+                </div>
+            </div>
+
+            <div class="equipment-container">
+                <button class="add-equipment-btn" onclick="openAddEquipmentModal()">Add Equipment</button>
+                <a href="/ship/<%= shipId %>" class="btn-back">Back to Ship Details</a>
+                <table class="equipment-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Equipment Name</th>
+                            <th>Category</th>
+                            <th>Addition Date</th>
+                            <th>Status</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (equipments.length> 0) { %>
+                            <% equipments.forEach((equipment, index)=> { %>
+                                <tr>
+                                    <td>
+                                        <%= index + 1 %>
+                                    </td>
+                                    <td>
+                                        <%= equipment.EquipmentName %>
+                                    </td>
+                                    <td>
+                                        <%= equipment.Category %>
+                                    </td>
+                                    <td>
+                                        <%= new Date(equipment.AdditionDate).toLocaleDateString() %>
+                                    </td>
+                                    <td class="<%= equipment.Status ? 'active' : 'inactive' %>">
+                                        <%= equipment.Status ? 'Active' : 'Inactive' %>
+                                    </td>
+                                    <td>
+                                        <button class="details-btn"
+                                            onclick="openDetailsModal(<%= equipment.EquipmentId %>)">Details</button>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="6">No equipment found for this ship.</td>
+                                        </tr>
+                                        <% } %>
+                    </tbody>
+
+
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div id="addEquipmentModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeAddEquipmentModal()">&times;</span>
+                <h2>Add New Equipment</h2>
+                <form id="addEquipmentForm">
+                    <input type="hidden" name="shipId" value="<%= shipId %>">
+                    <label for="equipmentName">Name:</label>
+                    <input type="text" id="equipmentName" name="equipmentName" required>
+
+                    <label for="category">Category:</label>
+                    <select id="category" name="category" required>
+                        <% categories.forEach(category=> { %>
+                            <option value="<%= category.ShipEquipmentCategoryId %>">
+                                <%= category.CategoryName %>
+                            </option>
+                            <% }); %>
+                    </select>
+
+
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" required></textarea>
+
+                    <label for="additionDate">Addition Date:</label>
+                    <input type="date" id="additionDate" name="additionDate" required>
+
+                    <label for="status">Status:</label>
+                    <select id="status" name="status" required>
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+
+                    <button type="submit">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Modal başlangıçta gizli olacak
+            document.getElementById('addEquipmentModal').style.display = 'none';
+        });
+
+        function openAddEquipmentModal() {
+            document.getElementById('addEquipmentModal').style.display = 'flex'; // Flex kullanımı
+        }
+
+        function closeAddEquipmentModal() {
+            document.getElementById('addEquipmentModal').style.display = 'none';
+        }
+
+        document.getElementById('addEquipmentForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+
+            const response = await fetch('/add-equipment', {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (response.ok) {
+                alert('Equipment added successfully!');
+                location.reload(); // Sayfayı yenile
+            } else {
+                alert('Failed to add equipment.');
+            }
+        });
+    </script>
+    <script>
+        function openDetailsModal(equipmentId) {
+            window.location.href = `/equipment-details/${equipmentId}`;
+        }
+    </script>
+
+</body>
+
+</html>
